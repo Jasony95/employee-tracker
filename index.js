@@ -40,7 +40,7 @@ const newRole = [
   {
     type: "input",
     name: "department",
-    message: "Type in the id of the department for the role: "
+    message: "Type in Department ID: ",
   }
 ]
 
@@ -56,12 +56,12 @@ const newEmployee = [
     message: "Type in the last name of the employee: "
   },
   {
-    type: "input",
+    type: "number",
     name: "role_id",
     message: "Type in the role id of the employee: "
   },
   {
-    type: "input",
+    type: "number",
     name: "manager_id",
     message: "Type in the manager id of the employee: "
   }
@@ -79,12 +79,12 @@ const updateEmployeeQuest = [
     message: "Type in the last name of the employee that you want to update: "
   },
   {
-    type: "input",
+    type: "number",
     name: "role_id",
     message: "Type in the role id: "
   },
   {
-    type: "input",
+    type: "number",
     name: "manager_id",
     message: "Type in the manager_id: "
   }
@@ -146,7 +146,7 @@ const viewDepartment = async() => {
   console.log('viewDepartment');
 
   db.query('SELECT * FROM department', function (err, results) {
-    console.table(results);
+    results.forEach(result => console.log(result.name));
     main();
   })
 }
@@ -206,6 +206,7 @@ const addRole = async() => {
   })
 }
 
+
 const addEmployee = async() => {
   console.log('addEmployee');
 
@@ -224,8 +225,8 @@ const addEmployee = async() => {
       console.log(`Added ${first_name} ${last_name} into DB`);
       main();
     })
-  }
-)}
+  })
+}
 
 const updateEmployee = async() => {
   console.log('UpdateEmployee');
@@ -236,7 +237,7 @@ const updateEmployee = async() => {
     let role_id = data.role_id;
     let manager_id = data.manager_id;
 
-    db.query(`UPDATE company_db.employee SET role_id = '${role_id}', manager_id = '${manager_id}' WHERE first_name = '${first_name}' AND last_name = '${last_name}'`), (err, result) => {
+    db.query(`UPDATE company_db.employee SET role_id = ${role_id}, manager_id = ${manager_id} WHERE first_name = '${first_name}' AND last_name = '${last_name}'`, (err, result) => {
       if (err) {
         console.log(err);
         main();
@@ -244,6 +245,7 @@ const updateEmployee = async() => {
       console.log('Updated data.');
       main();
     }
+    )
   }
   )
 }
